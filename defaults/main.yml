@@ -1,0 +1,13 @@
+restic_version: "0.12.0"
+restic_url: "https://github.com/restic/restic/releases/download/v{{ restic_version }}/restic_{{ restic_version }}_linux_arm.bz2"
+autorestic_version: "1.1.1"
+autorestic_url: "https://github.com/cupcakearmy/autorestic/releases/download/v{{ autorestic_version }}/autorestic_{{ autorestic_version }}_linux_arm.bz2"
+autorestic_config_path: /etc/.autorestic.yml
+
+# Every 4 hours
+autorestic_cronjob_minute: "0"
+autorestic_cronjob_hour: "*/4"
+autorestic_cronjob_day: "*"
+autorestic_cronjob_month: "*"
+autorestic_cronjob_weekday: "*"
+autorestic_cronjob_logfile: "/var/log/autorestic.log"

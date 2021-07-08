@@ -1,0 +1,89 @@
+---
+- name: Install dependencies
+  apt:
+    update_cache: false
+    pkg:
+      - bzip2
+
+- name: Check if restic is installed
+  stat:
+    path: "/usr/bin/restic"
+  register: stat_result_restic
+
+- debug:
+    msg: "restic already installed"
+  when: stat_result_restic.stat.exists
+
+- name: Install restic
+  block:
+  - name: "Download restic from {{ restic_url }}"
+    when: not ansible_check_mode
+    get_url:
+      url: "{{ restic_url }}"
+      dest: /tmp/restic.bz2
+
+  - name: Unzip restic
+    when: not ansible_check_mode
+    shell: bzip2 -dc /tmp/restic.bz2 > /usr/bin/restic
+
+  - name: Make restic executable
+    when: not ansible_check_mode
+    file: dest=/usr/bin/restic mode=a+x
+  
+  when: not stat_result_restic.stat.exists
+
+- name: Check if autorestic is installed
+  stat:
+    path: "/usr/bin/autorestic"
+  register: stat_result_autorestic
+
+- debug:
+    msg: "restic already installed"
+  when: stat_result_autorestic.stat.exists
+
+- name: Install autorestic
+  block:
+
+  - name: "Download restic from {{ autorestic_url }}"
+    when: not ansible_check_mode
+    get_url:
+      url: "{{ autorestic_url }}"
+      dest: /tmp/autorestic.bz2
+
+  - name: Unzip autorestic
+    when: not ansible_check_mode
+    shell: bzip2 -dc /tmp/autorestic.bz2 > /usr/bin/autorestic
+
+  - name: Make autorestic executable
+    when: not ansible_check_mode
+    file: dest=/usr/bin/autorestic mode=a+x
+  
+  when: not stat_result_autorestic.stat.exists
+
+- name: Ensure hdd backup path exists
+  file:
+    path: "{{ hdd_backup_path }}"
+    state: directory
+    mode: 0755
+    owner: "{{ new_user_PUID | default('0') }}"
+    group: "{{ new_user_PGID | default('0') }}"
+
+- name: Install autorestic.yml configuration
+  template:
+    src: autorestic.yml.j2
+    dest: "{{ autorestic_config_path }}"
+    mode: 0600
+
+- name: Initialize restic backends
+  when: not ansible_check_mode 
+  shell: autorestic -c "{{ autorestic_config_path }}" check
+
+- name: Install autorestic cronjob
+  cron:
+    name: "autorestic backup"
+    minute: "{{ autorestic_cronjob_minute }}"
+    hour: "{{ autorestic_cronjob_hour }}"
+    day: "{{ autorestic_cronjob_day }}"
+    month: "{{ autorestic_cronjob_month }}"
+    weekday: "{{ autorestic_cronjob_weekday }}"
+    job: "/usr/bin/autorestic -c {{ autorestic_config_path }} backup -a --verbose && /usr/bin/autorestic -c {{ autorestic_config_path }} forget -a --verbose >> {{ autorestic_cronjob_logfile }} 2>&1"

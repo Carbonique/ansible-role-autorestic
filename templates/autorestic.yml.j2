@@ -1,0 +1,45 @@
+locations:
+  docker_encrypted_basedir:
+    from: {{ docker_encrypted_basedir }}
+    to: 
+      - b2
+      - hdd
+    options:  
+      forget:
+        keep-daily: 4
+        keep-weekly: 1
+        keep-monthly: 3
+        keep-yearly: 1
+      backup:
+        exclude:
+          - '**/no-backup'
+    hooks:
+
+  docker_non_encrypted_basedir:
+    from: {{ docker_non_encrypted_basedir }}
+    to:
+      - b2
+      - hdd
+    options:  
+      forget:
+        keep-daily: 4
+        keep-weekly: 1
+        keep-monthly: 3
+        keep-yearly: 1
+      backup:
+        exclude:
+          - '**/no-backup'
+      hooks:
+
+backends:
+  b2:
+    type: b2
+    path: {{ b2_backup_bucket }}
+    key: {{ b2_autorestic_key }}
+    env:
+      b2_account_id: {{ b2_backup_bucket_id }}
+      b2_account_key: {{ b2_backup_bucket_key }} 
+  hdd:
+    type: local
+    path: {{ hdd_backup_path }}
+    key: {{ hdd_autorestic_key }}

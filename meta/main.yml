@@ -1,0 +1,6 @@
+galaxy_info:
+  role_name: autorestic
+  author: carbonique
+  description: Autorestic install
+  license: "license (MIT)"
+  min_ansible_version: 2.10
