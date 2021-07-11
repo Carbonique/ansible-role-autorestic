@@ -9,6 +9,8 @@ The role also assumes the user has existing Autorestic backup keys.
 
 # Variables
 
+For defaults see `defaults/main.yml`.
+
 | Variable                     | Description                                        | Default | Optional/Required |
 |------------------------------|----------------------------------------------------|---------|-------------------|
 | docker_encrypted_basedir     | The path for the encrypted Docker base directory   | null    | Required          |
