@@ -9,7 +9,6 @@ The role also assumes the user has existing Autorestic backup keys.
 
 # Variables
 
-```
 | Variable                     | Description                                        | Default | Optional/Required |
 |------------------------------+----------------------------------------------------+---------+-------------------|
 | docker_encrypted_basedir     | The path for the encrypted Docker base directory   | null    | Required          |
@@ -20,4 +19,3 @@ The role also assumes the user has existing Autorestic backup keys.
 | b2_backup_bucket_key         | Backblaze B2 bucket key                            | null    | Required          |
 | hdd_backup_path              | Path to backup to on local HDD                     | null    | Required          |
 | hdd_autorestic_key           | Autorestic key for the backup to local HDD         | null    | Required          |
-```
