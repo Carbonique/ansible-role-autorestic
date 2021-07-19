@@ -11,25 +11,23 @@
   register: stat_result_restic
 
 - debug:
-    msg: "restic already installed"
+    msg: "Restic already installed"
   when: stat_result_restic.stat.exists
 
 - name: Install restic
   block:
-  - name: "Download restic from {{ restic_url }}"
-    when: not ansible_check_mode
+
+  - name: "Downloading restic from {{ restic_url }}"
     get_url:
       url: "{{ restic_url }}"
       dest: /tmp/restic.bz2
 
   - name: Unzip restic
-    when: not ansible_check_mode
     shell: bzip2 -dc /tmp/restic.bz2 > /usr/bin/restic
 
   - name: Make restic executable
-    when: not ansible_check_mode
     file: dest=/usr/bin/restic mode=a+x
-  
+
   when: not stat_result_restic.stat.exists
 
 - name: Check if autorestic is installed
@@ -45,28 +43,25 @@
   block:
 
   - name: "Download restic from {{ autorestic_url }}"
-    when: not ansible_check_mode
     get_url:
       url: "{{ autorestic_url }}"
       dest: /tmp/autorestic.bz2
 
   - name: Unzip autorestic
-    when: not ansible_check_mode
     shell: bzip2 -dc /tmp/autorestic.bz2 > /usr/bin/autorestic
 
   - name: Make autorestic executable
-    when: not ansible_check_mode
     file: dest=/usr/bin/autorestic mode=a+x
   
   when: not stat_result_autorestic.stat.exists
 
-- name: Ensure hdd backup path exists
+- name: Ensure local backup path exists
   file:
-    path: "{{ hdd_backup_path }}"
+    path: "{{ local_backup_path }}"
     state: directory
     mode: 0755
-    owner: "{{ new_user_PUID | default('0') }}"
-    group: "{{ new_user_PGID | default('0') }}"
+    owner: "{{ user_PUID }}"
+    group: "{{ user_PGID }}"
 
 - name: Install autorestic.yml configuration
   template:
@@ -75,7 +70,6 @@
     mode: 0600
 
 - name: Initialize restic backends
-  when: not ansible_check_mode 
   shell: autorestic -c "{{ autorestic_config_path }}" check
 
 - name: Install autorestic cronjob
