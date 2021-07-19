@@ -18,7 +18,7 @@ Add the following to `requirements.yml`:
 - src: git@gitlab.com:carbonique/ansible-role-autorestic.git
   scm: git
   name: autorestic
-  version: master #master for latest. A new installation will overwrite the old role. Thus, you could also use a specific version (see tags in the repository)
+  version: #Leave empty for latest. To download a specific version: use the tag as listed in repo
 ```
 
 For system wide installation:
