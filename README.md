@@ -1,4 +1,5 @@
 - [About](#about)
+- [Installation](#installation)
 - [Defaults & Variables](#defaults--variables)
 
 # About
@@ -8,6 +9,23 @@ As backup backend it uses a B2 bucket and local storage. At this moment, only th
 The role also assumes the user has existing Autorestic backup keys. 
 
 Credits go to [Agate](https://code.agate.blue/agate/autorestic-backup-ansible-role)
+
+# Installation
+
+Add the following to `requirements.yml`:
+
+```
+- src: git@gitlab.com:carbonique/ansible-role-autorestic.git
+  scm: git
+  name: autorestic
+  version: master #master for latest. A new installation will overwrite the old role. Thus, you could also use a specific version (see tags in the repository)
+```
+
+For system wide installation:
+`ansible-galaxy install -r requirements.yml`
+
+For installation to the current directory:
+`ansible-galaxy install --roles-path . -r requirements.yml`
 
 # Defaults & Variables
 
