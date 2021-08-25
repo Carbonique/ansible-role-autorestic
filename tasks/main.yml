@@ -42,10 +42,10 @@
 - name: Install autorestic
   block:
 
-  - name: "Download Veracrypt source from {{ veracrypt_url }}"
+  - name: "Download Autorestic source from {{ autorestic_url }}"
     get_url:
-      url: "{{ veracrypt_url }}"
-      dest: /tmp/veracrypt.tar.gz
+      url: "{{ autorestic_url }}"
+      dest: /tmp/autorestic.bz2
 
   - name: Unzip autorestic
     shell: bzip2 -dc /tmp/autorestic.bz2 > /usr/bin/autorestic
