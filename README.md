@@ -1,6 +1,6 @@
 - [About](#about)
 - [Installation](#installation)
-- [Defaults & Variables](#defaults--variables)
+- [Defaults](#defaults)
 
 # About
 
@@ -27,6 +27,6 @@ For system wide installation:
 For installation to the current directory:
 `ansible-galaxy install --roles-path . -r requirements.yml`
 
-# Defaults & Variables
+# Defaults 
 
-Defaults have been prefilled, variables have to be filled by the user.
+See defaults/main.yml
