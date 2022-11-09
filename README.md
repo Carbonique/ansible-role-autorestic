@@ -15,7 +15,7 @@ Credits go to [Agate](https://code.agate.blue/agate/autorestic-backup-ansible-ro
 Add the following to `requirements.yml`:
 
 ```
-- src: git@gitlab.com:carbonique/ansible-role-autorestic.git
+- src: https://github.com/carbonique/ansible-role-autorestic.git
   scm: git
   name: autorestic
   version: #Leave empty for latest. To download a specific version: use the tag as listed in repo
